@@ -30,7 +30,7 @@ holds = {
 }
     
 
-async def buttons(mySoundManager):
+async def buttonController(mySoundManager):
     while True:
         for button, event in presses.items():
             print("[BUTTONS] REGISTER")
@@ -38,17 +38,17 @@ async def buttons(mySoundManager):
             await asyncio.sleep(1)
         await asyncio.sleep(10000)
 
-async def leds(mySoundManager):
+async def ledController(mySoundManager):
     prevState = True
-
     while True:
         try: 
             print("[LED] status is %s" % mySoundManager.isStatePlay() )
             if(mySoundManager.isStatePlay() and prevState != True): 
-                RGB_LED.blink( on_color=(1, 1, 0.2), off_color=(1, 0.2, 1), fade_in_time=2, fade_out_time=2, )
+                print("[LED] currently playing led is going to to magic")
+                RGB_LED.blink( on_color=(1, 1, 0.2), off_color=(1, 0.2, 1), fade_in_time=4, fade_out_time=4, )
             elif(mySoundManager.isStatePlay() == False and prevState != False): 
                 print("[LED] currently not playing led is green")
-                RGB_LED.blink( on_color=(1, 1, 0), off_color=(1, 0.1, 0), fade_in_time=2, fade_out_time=2, )
+                RGB_LED.blink( on_color=(1, 1, 0), off_color=(1, 0.1, 0), fade_in_time=1, fade_out_time=2, )
             prevState = mySoundManager.isStatePlay();
             await asyncio.sleep(1)
         except:
@@ -57,31 +57,12 @@ async def leds(mySoundManager):
 
 
 def main():
-    # RGB_LED.blink( on_color=(0, 0, .1), off_color=(1, 0, 0), fade_in_time=2, fade_out_time=2, )
-
-    # blink(on_time=1, off_time=1, fade_in_time=0, fade_out_time=0, on_color=(1, 1, 1), off_color=(0, 0, 0), n=None, background=True)
-    # steps
-    # turn of red led and turn on yellow
-    # initiate sound manager
-    # green led on 
-    # wait for button
-
-    # sleep(10)
-    # LED_BLUE.off()
-    # LED_RED.off()
-
-
-    # RGB_LED.blink( on_color=(0, 0, .1), off_color=(1, 0, 0), fade_in_time=2, fade_out_time=2, )
-
-
-
-
     print("[MAIN] creating soundmanager")
     mySoundManager = SoundManager()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(
-        leds(mySoundManager),
-        buttons(mySoundManager),
+        ledController(mySoundManager),
+        buttonController(mySoundManager),
     ))
     loop.close()
 
