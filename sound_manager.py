@@ -18,7 +18,7 @@ class SoundManager(object):
         print('[LOAD PLAYLIST] clear')
         self.client.clear()
         print('[LOAD PLAYLIST] loading')
-        self.client.load('queue1')
+        self.client.load(playlist)
         print('[LOAD PLAYLIST] shuffle')
         self.client.shuffle()
 

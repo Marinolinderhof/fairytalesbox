@@ -6,7 +6,7 @@ from time import sleep
 import asyncio
 
 
-GPIO_PLAY = Button(21)
+GPIO_PLAY = Button(21, hold_time=2)
 RGB_LED = RGBLED(17,18,27)
 
 def play_story(sound_manager):
@@ -20,6 +20,10 @@ def stop(sound_manager):
 def volume_down(sound_manager):
     print("softer")
 
+def shutdown(sound_manager):
+    # check_call(['sudo', 'poweroff'])
+    print("SHUTDOWN!!!!!!!!!!!!!")
+    sound_manager.loadPlaylist('queue2')
 
 presses = {
     GPIO_PLAY: play_story,
@@ -35,6 +39,7 @@ async def buttonController(mySoundManager):
         for button, event in presses.items():
             print("[BUTTONS] REGISTER")
             button.when_pressed = partial(event, mySoundManager)
+            button.when_held = partial(shutdown, mySoundManager)
             await asyncio.sleep(1)
         await asyncio.sleep(10000)
 
@@ -42,12 +47,12 @@ async def ledController(mySoundManager):
     prevState = True
     while True:
         try: 
-            print("[LED] status is %s" % mySoundManager.isStatePlay() )
+            # print("[LED] status is %s" % mySoundManager.isStatePlay() )
             if(mySoundManager.isStatePlay() and prevState != True): 
-                print("[LED] currently playing led is going to to magic")
+                # print("[LED] currently playing led is going to to magic")
                 RGB_LED.blink( on_color=(1, 1, 0.2), off_color=(1, 0.2, 1), fade_in_time=4, fade_out_time=4, )
             elif(mySoundManager.isStatePlay() == False and prevState != False): 
-                print("[LED] currently not playing led is green")
+                # print("[LED] currently not playing led is green")
                 RGB_LED.blink( on_color=(1, 1, 0), off_color=(1, 0.1, 0), fade_in_time=1, fade_out_time=2, )
             prevState = mySoundManager.isStatePlay();
             await asyncio.sleep(1)
