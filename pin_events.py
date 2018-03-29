@@ -13,12 +13,6 @@ def play_story(sound_manager):
     print("[PLAY EVENT]")
     sound_manager.nextRandomSong()
 
-def stop(sound_manager):
-    print("stop")
-
-
-def volume_down(sound_manager):
-    print("softer")
 
 def shutdown(sound_manager):
     # check_call(['sudo', 'poweroff'])
@@ -28,11 +22,6 @@ def shutdown(sound_manager):
 presses = {
     GPIO_PLAY: play_story,
 }
-
-holds = {
-    GPIO_PLAY: stop,
-}
-    
 
 async def buttonController(mySoundManager):
     while True:
